@@ -11,8 +11,8 @@ def quotes(request):
     if 'userid' not in request.session:
         return redirect ("/")
     context = {
-        'user' : User.objects.get(id=request.session['userid']),
-        'quotes' : Quote.objects.all(),
+        'currentuser' : User.objects.get(id=request.session['userid']),
+        'quotes' : Quote.objects.all().exclude(admirers__id=request.session['userid']),
         'fav_quotes' : Quote.objects.filter(admirers__id=request.session['userid'])
     }
     return render(request, 'belt/quoteboard.html', context)
@@ -44,6 +44,18 @@ def like_quote(request, quote_id):
     if new_admirer[0] == True:
             messages.add_message(request, messages.INFO, "Quote favorited")
             return redirect('/quotes')
+
+def remove(request, id):
+    if 'userid' not in request.session:
+        return redirect ("/")
+    try:
+        quote = Quote.objects.get(id= id)
+        current_user = User.objects.get(id=request.session['userid'])
+        quote.admirers.remove(current_user)
+        return redirect('/quotes')
+    except Quote.DoesNotExist:
+        messages.add_message(request, messages.INFO, "No quote specified")
+        return redirect('/quotes')
 
 def user_details(request, id):
     if 'userid' not in request.session:

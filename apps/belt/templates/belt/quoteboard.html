@@ -17,7 +17,7 @@
         </div>
       </nav>
     <div class="container">
-      <p>Hi, {{user.name}}</p>
+      <p>Hi, {{currentuser.name}}</p>
       {% if messages %}
         <ul class="messages">
         {% for message in messages %}
@@ -51,7 +51,12 @@
                   <p>{{quote.message}}</p>
                 </div>
                 <div class="card-action">
-                  <p>Posted by <a href="/user/{{quote.author.id}}">{{quote.author.name}}</a>   <a href="/like/{{quote.id}}">Add to my favorites</a></p>
+                  <p>Posted by <a href="/user/{{quote.author.id}}">{{quote.author.name}}</a>
+                      {% if currentuser.id in quote.admirers.id %}
+                        <a href="/remove/{{quote.id}}">Remove from to my favorites</a></p>
+                      {% else %}
+                        <a href="/like/{{quote.id}}">Add to my favorites</a></p>
+                      {% endif %}
                 </div>
               </div>
             </div>
