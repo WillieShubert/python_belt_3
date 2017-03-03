@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Quote Dashboard</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+  </head>
+  <body>
+      <nav>
+        <div class="nav-wrapper">
+          <a href="/travels" class="brand-logo">Quotes to ___ By</a>
+          <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="/logout">Logout</a></li>
+          </ul>
+        </div>
+      </nav>
+    <div class="container">
+      <p>Hi, {{user.name}}</p>
+      {% if messages %}
+        <ul class="messages">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+        <form action="/process_quote" class="col s12" method="POST">
+          {% csrf_token %}
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="quote_by" type="text" class="validate" name="quote_by">
+              <label for="quote_by">Quoted by:</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <label for="message">Message:</label>
+              <input id="message" type="text" class="validate" name="message">
+            </div>
+          </div>
+          <input type="submit" value="Add Quote" class="waves-effect waves-light btn">
+        </form>
+        <h5>Quoteable Quotes</h5>
+        {% for quote in quotes %}
+        <div class="col s12 m7">
+          <div class="card horizontal">
+              <div class="card-stacked">
+                <div class="card-content">
+                  <b>{{quote.quote_by}}</b>
+                  <p>{{quote.message}}</p>
+                </div>
+                <div class="card-action">
+                  <p>Posted by <a href="/user/{{quote.author.id}}">{{quote.author.name}}</a>   <a href="/like/{{quote.id}}">Add to my favorites</a></p>
+                </div>
+              </div>
+            </div>
+         </div>
+         {% endfor %}
+        <h5>Favorite Quotes</h5>
+        {% for fav_quote in fav_quotes %}
+        <div class="col s12 m7">
+          <div class="card horizontal">
+              <div class="card-stacked">
+                <div class="card-content">
+                  <b>{{fav_quote.quote_by}}</b>
+                  <p>{{fav_quote.message}}</p>
+                </div>
+                <div class="card-action">
+                  <p>Posted by <a href="/user/{{fav_quote.author.id}}">{{fav_quote.author.name}}</a>   <a href="/remove/{{fav_quote.id}}">Remove from to my favorites</a></p>
+                </div>
+              </div>
+            </div>
+         </div>
+         {% endfor %}
+      </div>      <!-- this closes the container -->
+  </body>
+</html>

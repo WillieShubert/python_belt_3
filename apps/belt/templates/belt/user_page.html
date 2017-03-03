@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Trip Details</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+    </head>
+    <body>
+      <nav>
+        <div class="nav-wrapper">
+          <a href="/quotes" class="brand-logo">Quotes to __ by</a>
+          <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="/logout">Logout</a></li>
+          </ul>
+        </div>
+      </nav>
+      <div class="container">
+        <h2>Post by {{user.name}}</h2>
+        <p>Count: {{quote_count}}</p>
+        {% for quote in quote_details %}
+        <div class="col s12 m7">
+          <div class="card horizontal">
+              <div class="card-stacked">
+                <div class="card-content">
+                  <b>{{quote.quote_by}}</b>
+                  <p>{{quote.message}}</p>
+                </div>
+                <!-- <div class="card-action">
+                  <p>Posted by <a href="#">{{quote.author.name}}</a>   <a href="#">Add to my favorites</a></p>
+                </div> -->
+              </div>
+            </div>
+         </div>
+        {% endfor %}
+  </body>
+</html>
