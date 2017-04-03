@@ -25,9 +25,9 @@
         {% endfor %}
         </ul>
         {% endif %}
-        <form action="/process_quote" class="col s12" method="POST">
-          {% csrf_token %}
           <div class="row">
+            <form action="/process_quote" class="col s12" method="POST">
+              {% csrf_token %}
             <div class="input-field col s12">
               <input id="quote_by" type="text" class="validate" name="quote_by">
               <label for="quote_by">Quoted by:</label>
@@ -38,33 +38,36 @@
               <label for="message">Message:</label>
               <input id="message" type="text" class="validate" name="message">
             </div>
+
+            <input type="submit" value="Add Quote" class="waves-effect waves-light btn">
+          </form>
           </div>
-          <input type="submit" value="Add Quote" class="waves-effect waves-light btn">
-        </form>
         <h5>Quoteable Quotes</h5>
         {% for quote in quotes %}
-        <div class="col s12 m7">
-          <div class="card horizontal">
-              <div class="card-stacked">
-                <div class="card-content">
-                  <b>{{quote.quote_by}}</b>
-                  <p>{{quote.message}}</p>
+        <div class="row">
+          <div class="col 6">
+            <div class="card horizontal">
+                <div class="card-stacked">
+                  <div class="card-content">
+                    <b>{{quote.quote_by}}</b>
+                    <p>{{quote.message}}</p>
+                  </div>
+                  <div class="card-action">
+                    <p>Posted by <a href="/user/{{quote.author.id}}">{{quote.author.name}}</a>
+                        {% if currentuser.id in quote.admirers.id %}
+                          <a href="/remove/{{quote.id}}">Remove from to my favorites</a></p>
+                        {% else %}
+                          <a href="/like/{{quote.id}}">Add to my favorites</a></p>
+                        {% endif %}
+                  </div>
                 </div>
-                <div class="card-action">
-                  <p>Posted by <a href="/user/{{quote.author.id}}">{{quote.author.name}}</a>
-                      {% if currentuser.id in quote.admirers.id %}
-                        <a href="/remove/{{quote.id}}">Remove from to my favorites</a></p>
-                      {% else %}
-                        <a href="/like/{{quote.id}}">Add to my favorites</a></p>
-                      {% endif %}
-                </div>
-              </div>
             </div>
          </div>
+
          {% endfor %}
-        <h5>Favorite Quotes</h5>
+         <h5>Favorite Quotes</h5>
         {% for fav_quote in fav_quotes %}
-        <div class="col s12 m7">
+        <div class="col s6">
           <div class="card horizontal">
               <div class="card-stacked">
                 <div class="card-content">
@@ -77,6 +80,7 @@
               </div>
             </div>
          </div>
+
          {% endfor %}
       </div>      <!-- this closes the container -->
   </body>
